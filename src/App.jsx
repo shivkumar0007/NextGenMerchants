@@ -1,9 +1,10 @@
-import React from 'react'
 
-const App = () => {
+import Home from "./screens/Home";
+
+function App() {
   return (
-    <div>App</div>
-  )
+    <div><Home/></div>
+  );
 }
 
-export default App
+export default App;
