@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ChevronRight, Sparkles } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
+import { ChevronRight, Sparkles } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -14,7 +14,7 @@ const Hero = () => {
         <Sparkles size={14} /> The Future is Here
       </motion.div>
 
-      <motion.h1 
+      <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
@@ -23,18 +23,20 @@ const Hero = () => {
         Future of <br /> Smart Shopping
       </motion.h1>
 
-      <motion.p 
+      <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
         className="max-w-2xl text-gray-400 text-lg md:text-xl mb-10 font-light leading-relaxed"
       >
-        Experience the intersection of <span className="text-white font-medium">AI Intelligence</span>, 
-        <span className="text-white font-medium"> AR Immersion</span>, and 
-        <span className="text-white font-medium"> Gamified Rewards</span> in one seamless platform.
+        Experience the intersection of{" "}
+        <span className="text-white font-medium">AI Intelligence</span>,
+        <span className="text-white font-medium"> AR Immersion</span>, and
+        <span className="text-white font-medium"> Gamified Rewards</span> in one
+        seamless platform.
       </motion.p>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
@@ -49,15 +51,21 @@ const Hero = () => {
       </motion.div>
 
       {/* Hero Mockup Grid */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.8 }}
         className="mt-20 w-full max-w-5xl grid grid-cols-3 gap-4 opacity-50 grayscale hover:grayscale-0 transition-all duration-700"
       >
-        <div className="h-40 rounded-2xl bg-gradient-to-br from-purple-500/20 to-transparent border border-white/5 flex items-end p-4 font-bold text-xs uppercase tracking-tighter">AI Curated</div>
-        <div className="h-52 rounded-2xl bg-gradient-to-br from-blue-500/20 to-transparent border border-white/5 mt-[-20px] flex items-end p-4 font-bold text-xs uppercase tracking-tighter">AR Fitting</div>
-        <div className="h-40 rounded-2xl bg-gradient-to-br from-purple-500/20 to-transparent border border-white/5 flex items-end p-4 font-bold text-xs uppercase tracking-tighter">Live Reels</div>
+        <div className="h-40 rounded-2xl bg-gradient-to-br from-purple-500/20 to-transparent border border-white/5 flex items-end p-4 font-bold text-xs uppercase tracking-tighter">
+          AI Curated
+        </div>
+        <div className="h-52 rounded-2xl bg-gradient-to-br from-blue-500/20 to-transparent border border-white/5 mt-[-20px] flex items-end p-4 font-bold text-xs uppercase tracking-tighter">
+          AR Fitting
+        </div>
+        <div className="h-40 rounded-2xl bg-gradient-to-br from-purple-500/20 to-transparent border border-white/5 flex items-end p-4 font-bold text-xs uppercase tracking-tighter">
+          Live Reels
+        </div>
       </motion.div>
     </section>
   );
