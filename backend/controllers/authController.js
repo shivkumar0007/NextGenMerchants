@@ -26,7 +26,15 @@ const signup = async (req, res) => {
     password: hashed,
   });
 
-  res.json({ token: generateToken(user._id) });
+  res.json({
+    token: generateToken(user._id),
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role || "user",
+    },
+  });
 };
 
 // ✅ Login
@@ -39,7 +47,15 @@ const login = async (req, res) => {
   const match = await bcrypt.compare(password, user.password);
   if (!match) return res.status(400).json({ msg: "Wrong password" });
 
-  res.json({ token: generateToken(user._id) });
+  res.json({
+    token: generateToken(user._id),
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role || "user",
+    },
+  });
 };
 
 // 🔁 Forgot Password
@@ -91,7 +107,6 @@ const resetPassword = async (req, res) => {
   res.json({ msg: "Password updated" });
 };
 
-// 🔥 EXPORT (IMPORTANT)
 module.exports = {
   signup,
   login,

@@ -1,18 +1,19 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Admin from "./screens/Admin";
+import Dashboard from "./screens/Dashboard";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
+import Profile from "./screens/Profile";
 import Signup from "./screens/Signup";
-import Dashboard from "./screens/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
 
-
-// 🔐 Check auth
 const PublicRoute = ({ children }) => {
   const token = localStorage.getItem("token");
+  const userData = localStorage.getItem("user");
+  const user = userData ? JSON.parse(userData) : null;
 
-  // agar login hai → dashboard bhejo
   if (token) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to={user?.role === "admin" ? "/admin" : "/dashboard"} replace />;
   }
 
   return children;
@@ -22,11 +23,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-        {/* Home */}
         <Route path="/" element={<Home />} />
-
-        {/* Public (Login/Signup) */}
         <Route
           path="/login"
           element={
@@ -35,7 +32,6 @@ function App() {
             </PublicRoute>
           }
         />
-
         <Route
           path="/signup"
           element={
@@ -44,8 +40,6 @@ function App() {
             </PublicRoute>
           }
         />
-
-        {/* Protected */}
         <Route
           path="/dashboard"
           element={
@@ -54,7 +48,22 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute requireAdmin>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
