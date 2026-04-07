@@ -8,6 +8,7 @@ import Login from "./screens/Login";
 import ProductDetails from "./screens/ProductDetails";
 import Profile from "./screens/Profile";
 import Signup from "./screens/Signup";
+import VirtualTryOn from "./screens/VirtualTryOn";
 
 const PublicRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -71,6 +72,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ProductDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/try-on/:productId"
+          element={
+            <ProtectedRoute>
+              <VirtualTryOn />
             </ProtectedRoute>
           }
         />

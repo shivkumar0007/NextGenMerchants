@@ -13,6 +13,11 @@ export const fallbackProducts = [
     discountPercent: 25,
     image:
       "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1503341504253-dff4815485f1?auto=format&fit=crop&w=1200&q=80",
+    ],
+    colors: ["Black", "Stone", "Olive"],
     description: "Soft heavyweight hoodie for all-day comfort and streetwear layering.",
     category: "Fashion",
     stock: 18,
@@ -25,6 +30,11 @@ export const fallbackProducts = [
     discountPercent: 22,
     image:
       "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=1200&q=80",
+    ],
+    colors: ["Red", "White", "Black"],
     description: "Breathable running shoes with cushioned midsoles and fast everyday style.",
     category: "Footwear",
     stock: 12,
@@ -37,6 +47,11 @@ export const fallbackProducts = [
     discountPercent: 29,
     image:
       "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&w=1200&q=80",
+    ],
+    colors: ["Black", "Silver", "Blue"],
     description: "Track workouts, sleep, and notifications with a bright AMOLED face.",
     category: "Electronics",
     stock: 9,
@@ -49,6 +64,11 @@ export const fallbackProducts = [
     discountPercent: 27,
     image:
       "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80",
+    ],
+    colors: ["White", "Black", "Teal"],
     description: "Noise-controlled earbuds with balanced sound and compact charging case.",
     category: "Audio",
     stock: 25,
@@ -61,6 +81,11 @@ export const fallbackProducts = [
     discountPercent: 33,
     image:
       "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1517999144091-3d9dca6d1e43?auto=format&fit=crop&w=1200&q=80",
+    ],
+    colors: ["Gold", "Black"],
     description: "Minimal task lamp with warm lighting modes for work and reading.",
     category: "Home",
     stock: 30,
@@ -73,6 +98,11 @@ export const fallbackProducts = [
     discountPercent: 24,
     image:
       "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1491637639811-60e2756cc1c7?auto=format&fit=crop&w=1200&q=80",
+    ],
+    colors: ["Forest", "Sand", "Black"],
     description: "Weather-ready backpack with laptop sleeve, organizers, and bottle pockets.",
     category: "Travel",
     stock: 16,
@@ -94,6 +124,24 @@ const writeJson = (key, value) => {
 };
 
 export const getStoredUser = () => readJson("user", null);
+
+export const getProductImages = (product) => {
+  const images = Array.isArray(product?.images)
+    ? product.images.filter(Boolean)
+    : [];
+
+  if (images.length) {
+    return images;
+  }
+
+  return product?.image ? [product.image] : [];
+};
+
+export const getPrimaryImage = (product) =>
+  getProductImages(product)[0] || product?.image || "";
+
+export const getProductColors = (product) =>
+  Array.isArray(product?.colors) ? product.colors.filter(Boolean) : [];
 
 const scopedKey = (bucket, user) => {
   const identity = user?.email || "guest";
@@ -145,11 +193,15 @@ const normalizeGroupBuyEntry = (entry) => {
 
 export const addToCart = (user, product) => {
   const cart = getCart(user);
-  const existing = cart.find((item) => item.productId === product._id);
+  const selectedColor = product.selectedColor || "";
+  const itemKey = selectedColor ? `${product._id}::${selectedColor}` : product._id;
+  const existing = cart.find(
+    (item) => (item.itemKey || item.productId) === itemKey
+  );
 
   const next = existing
     ? cart.map((item) =>
-        item.productId === product._id
+        (item.itemKey || item.productId) === itemKey
           ? {
               ...item,
               quantity: item.quantity + 1,
@@ -160,13 +212,16 @@ export const addToCart = (user, product) => {
               discountPercent: Number(
                 product.discountPercent || item.discountPercent || getDiscountPercent(product)
               ),
-              image: product.image || item.image,
+              image: getPrimaryImage(product) || item.image,
               category: product.category || item.category,
+              selectedColor: selectedColor || item.selectedColor || "",
+              itemKey,
             }
           : item
       )
     : [
         {
+          itemKey,
           productId: product._id,
           quantity: 1,
           name: product.name,
@@ -177,8 +232,9 @@ export const addToCart = (user, product) => {
           discountPercent: Number(
             product.discountPercent || getDiscountPercent(product)
           ),
-          image: product.image,
+          image: getPrimaryImage(product),
           category: product.category,
+          selectedColor,
         },
         ...cart,
       ];
@@ -191,9 +247,9 @@ export const updateCartQuantity = (user, productId, quantity) => {
   const cart = getCart(user);
   const next =
     quantity <= 0
-      ? cart.filter((item) => item.productId !== productId)
+      ? cart.filter((item) => (item.itemKey || item.productId) !== productId)
       : cart.map((item) =>
-          item.productId === productId ? { ...item, quantity } : item
+          (item.itemKey || item.productId) === productId ? { ...item, quantity } : item
         );
   writeJson(scopedKey("cart", user), next);
   return next;
@@ -464,17 +520,17 @@ export const syncCartPrices = (user, products) => {
       return item;
     }
 
-    const groupState = getGroupBuyProgress(groups[item.productId] || 1);
+    const groupState = getGroupBuyProgress(groups[item.productId]);
     const baseDiscount = getDiscountPercent(product);
-    const extraDiscount = getGroupBuyDiscountPercent(groups[item.productId] || 1);
+    const extraDiscount = getGroupBuyDiscountPercent(groups[item.productId]);
     const price = groupState.unlocked
-      ? getGroupBuyPrice(product, groups[item.productId] || 1)
+      ? getGroupBuyPrice(product, groups[item.productId])
       : Number(product.price || item.price || 0);
 
     return {
       ...item,
       name: product.name || item.name,
-      image: product.image || item.image,
+      image: getPrimaryImage(product) || item.image,
       category: product.category || item.category,
       originalPrice: getOriginalPrice(product),
       discountPercent: extraDiscount ? baseDiscount + extraDiscount : baseDiscount,

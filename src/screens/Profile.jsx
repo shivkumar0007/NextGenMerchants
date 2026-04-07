@@ -223,7 +223,7 @@ const Profile = () => {
 
               {cartItems.map((item) => (
                 <div
-                  key={item.productId}
+                  key={item.itemKey || item.productId}
                   className="rounded-2xl border border-white/10 bg-[#0d1024] p-4"
                 >
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -247,13 +247,22 @@ const Profile = () => {
                           </span>{" "}
                           | {item.discountPercent}% OFF
                         </p>
+                        {item.selectedColor && (
+                          <p className="text-xs text-cyan-100">
+                            Color: {item.selectedColor}
+                          </p>
+                        )}
                       </div>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
                       <button
                         onClick={() => {
-                          updateCartQuantity(user, item.productId, item.quantity - 1);
+                          updateCartQuantity(
+                            user,
+                            item.itemKey || item.productId,
+                            item.quantity - 1
+                          );
                           refreshCart();
                         }}
                         className="h-9 w-9 rounded-full border border-white/15"
@@ -265,7 +274,11 @@ const Profile = () => {
                       </span>
                       <button
                         onClick={() => {
-                          updateCartQuantity(user, item.productId, item.quantity + 1);
+                          updateCartQuantity(
+                            user,
+                            item.itemKey || item.productId,
+                            item.quantity + 1
+                          );
                           refreshCart();
                         }}
                         className="h-9 w-9 rounded-full border border-white/15"
@@ -277,7 +290,7 @@ const Profile = () => {
                       </span>
                       <button
                         onClick={() => {
-                          removeFromCart(user, item.productId);
+                          removeFromCart(user, item.itemKey || item.productId);
                           refreshCart();
                         }}
                         className="rounded-full border border-rose-400/30 px-4 py-2 text-sm text-rose-200"
@@ -517,7 +530,7 @@ const Profile = () => {
                         <div className="mt-3 space-y-3">
                           {purchase.items.map((item) => (
                             <button
-                              key={`${purchase.id}-${item.productId}`}
+                              key={`${purchase.id}-${item.itemKey || item.productId}`}
                               onClick={() => navigate(`/product/${item.productId}`)}
                               className="flex w-full items-center gap-3 rounded-2xl border border-white/10 bg-[#0d1024] p-3 text-left hover:border-cyan-300/30"
                             >
@@ -531,6 +544,11 @@ const Profile = () => {
                                 <p className="text-xs text-slate-400">
                                   Qty {item.quantity} | {formatPrice(item.price)} each
                                 </p>
+                                {item.selectedColor && (
+                                  <p className="text-xs text-cyan-100">
+                                    Color: {item.selectedColor}
+                                  </p>
+                                )}
                               </div>
                               <span className="text-sm font-medium text-cyan-100">
                                 {formatPrice(item.price * item.quantity)}
