@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const API_BASE =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV
+    ? "http://localhost:5000/api"
+    : "https://nextgen-backend-y4fj.onrender.com/api");
+
 const Signup = () => {
   const navigate = useNavigate();
 
@@ -18,7 +24,7 @@ const Signup = () => {
     try {
       setLoading(true);
 
-      const res = await fetch("https://nextgen-backend-y4fj.onrender.com/api/auth/signup", {
+      const res = await fetch(`${API_BASE}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,18 +35,15 @@ const Signup = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.msg || "Signup failed ❌");
-        setLoading(false);
+        alert(data.msg || "Signup failed");
         return;
       }
 
-      alert("Signup Success ✅");
-
-      // 🔥 auto redirect to login
+      alert("Signup Success");
       navigate("/login");
-
     } catch (err) {
-      alert("Server error ❌");
+      console.error(err);
+      alert("Server error");
     } finally {
       setLoading(false);
     }
@@ -48,29 +51,23 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#050014] text-white">
-
       <div className="w-[800px] h-[450px] flex rounded-xl overflow-hidden border border-purple-500/30 shadow-[0_0_40px_rgba(168,85,247,0.4)]">
-
-        {/* LEFT */}
         <div className="w-1/2 bg-gradient-to-br from-purple-600 to-indigo-700 flex flex-col justify-center items-center text-center p-10">
-          <h1 className="text-3xl font-bold mb-4">JOIN US 🚀</h1>
+          <h1 className="text-3xl font-bold mb-4">JOIN US</h1>
           <p className="text-sm text-gray-200">
             Create account and unlock smart shopping experience
           </p>
         </div>
 
-        {/* RIGHT FORM */}
         <div className="w-1/2 bg-black p-10 flex flex-col justify-center">
           <h2 className="text-3xl font-bold mb-8">Signup</h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-
             <input
               placeholder="Name"
               required
-              onChange={(e) =>
-                setForm({ ...form, name: e.target.value })
-              }
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
               className="w-full bg-transparent border-b border-gray-500 focus:border-purple-500 outline-none p-2"
             />
 
@@ -78,9 +75,8 @@ const Signup = () => {
               type="email"
               placeholder="Email"
               required
-              onChange={(e) =>
-                setForm({ ...form, email: e.target.value })
-              }
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="w-full bg-transparent border-b border-gray-500 focus:border-purple-500 outline-none p-2"
             />
 
@@ -88,15 +84,14 @@ const Signup = () => {
               type="password"
               placeholder="Password"
               required
-              onChange={(e) =>
-                setForm({ ...form, password: e.target.value })
-              }
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="w-full bg-transparent border-b border-gray-500 focus:border-purple-500 outline-none p-2"
             />
 
             <button
               disabled={loading}
-              className="w-full py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 hover:scale-105 transition-all font-bold"
+              className="w-full py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 hover:scale-105 transition-all font-bold disabled:opacity-50"
             >
               {loading ? "Creating..." : "Signup"}
             </button>

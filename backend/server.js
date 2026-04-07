@@ -26,3 +26,7 @@ app.use("/api/auth", require("./routes/auth"));
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+const productRoutes = require("./routes/product");
+
+app.use("/api/products", productRoutes);
