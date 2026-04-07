@@ -1,8 +1,15 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { 
-  Gift, Cpu, Mic, Glasses, Layers, Gamepad2, Video, Users 
-} from 'lucide-react';
+import { motion } from "framer-motion";
+import {
+  Cpu,
+  Gamepad2,
+  Gift,
+  Glasses,
+  Layers,
+  Mic,
+  Users,
+  Video,
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const featureList = [
   { icon: <Gift className="text-purple-400" />, title: "AI Gift Recommendation", desc: "Perfect gifts chosen by neural networks." },
@@ -16,30 +23,35 @@ const featureList = [
 ];
 
 const Features = () => {
+  const navigate = useNavigate();
+
   return (
-    <section id="features" className="py-24 px-6 max-w-7xl mx-auto">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4">Premium Features</h2>
-        <p className="text-gray-500">Everything you need for the ultimate shopping experience.</p>
+    <section id="features" className="mx-auto max-w-7xl px-6 py-24">
+      <div className="mb-16 text-center">
+        <h2 className="mb-4 text-3xl font-bold md:text-5xl">Premium Features</h2>
+        <p className="text-gray-500">
+          Everything you need for the ultimate shopping experience.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {featureList.map((f, i) => (
-          <motion.div
-            key={i}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {featureList.map((feature, index) => (
+          <motion.button
+            key={feature.title}
             whileHover={{ y: -10, scale: 1.02 }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-            className="p-8 rounded-[2rem] bg-white/5 border border-white/5 backdrop-blur-sm hover:border-purple-500/30 hover:bg-white/[0.07] transition-all group cursor-default"
+            transition={{ delay: index * 0.1 }}
+            onClick={() => navigate("/dashboard")}
+            className="group rounded-[2rem] border border-white/5 bg-white/5 p-8 text-left backdrop-blur-sm transition-all hover:border-purple-500/30 hover:bg-white/[0.07]"
           >
-            <div className="mb-4 p-3 w-fit rounded-2xl bg-black/40 group-hover:scale-110 transition-transform">
-              {f.icon}
+            <div className="mb-4 w-fit rounded-2xl bg-black/40 p-3 transition-transform group-hover:scale-110">
+              {feature.icon}
             </div>
-            <h3 className="text-lg font-bold mb-2">{f.title}</h3>
-            <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
-          </motion.div>
+            <h3 className="mb-2 text-lg font-bold">{feature.title}</h3>
+            <p className="text-sm leading-relaxed text-gray-500">{feature.desc}</p>
+          </motion.button>
         ))}
       </div>
     </section>

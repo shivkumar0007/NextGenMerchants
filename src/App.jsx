@@ -1,9 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import AIChatbox from "./components/AIChatbox";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Admin from "./screens/Admin";
 import Dashboard from "./screens/Dashboard";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
+import ProductDetails from "./screens/ProductDetails";
 import Profile from "./screens/Profile";
 import Signup from "./screens/Signup";
 
@@ -64,7 +66,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/product/:productId"
+          element={
+            <ProtectedRoute>
+              <ProductDetails />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+      <AIChatbox />
     </BrowserRouter>
   );
 }

@@ -1,42 +1,69 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const InteractiveSection = () => {
+  const navigate = useNavigate();
+
   return (
-    <section className="py-24 px-6 bg-gradient-to-b from-transparent to-purple-900/10">
-      <div className="max-w-7xl mx-auto rounded-[3rem] bg-white/5 border border-white/5 p-10 md:p-20 overflow-hidden relative">
-        <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
+    <section
+      id="explore"
+      className="bg-gradient-to-b from-transparent to-purple-900/10 px-6 py-24"
+    >
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[3rem] border border-white/5 bg-white/5 p-10 md:p-20">
+        <div className="relative z-10 flex flex-col items-center gap-12 md:flex-row">
           <div className="flex-1">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white">Experience Shopping <br/> Like Never Before</h2>
-            <p className="text-gray-400 mb-8 max-w-md">Our interactive Reels UI allows you to browse live product demonstrations and checkout instantly without ever leaving the feed.</p>
+            <h2 className="mb-6 text-4xl font-bold leading-tight text-white md:text-6xl">
+              Experience Shopping <br /> Like Never Before
+            </h2>
+            <p className="mb-8 max-w-md text-gray-400">
+              Our interactive Reels UI allows you to browse live product
+              demonstrations and checkout instantly without ever leaving the feed.
+            </p>
             <ul className="space-y-4">
-              {['One-tap checkout', 'Real-time stock alerts', 'Live AR overlays'].map(item => (
-                <li key={item} className="flex items-center gap-3 text-sm font-medium text-gray-300">
-                  <div className="w-1.5 h-1.5 rounded-full bg-purple-500" /> {item}
-                </li>
-              ))}
+              {["One-tap checkout", "Real-time stock alerts", "Live AR overlays"].map(
+                (item) => (
+                  <li
+                    key={item}
+                    className="flex items-center gap-3 text-sm font-medium text-gray-300"
+                  >
+                    <div className="h-1.5 w-1.5 rounded-full bg-purple-500" /> {item}
+                  </li>
+                )
+              )}
             </ul>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <button
+                onClick={() => navigate("/dashboard")}
+                className="rounded-full bg-white px-6 py-3 font-semibold text-black"
+              >
+                Open Shopping Hub
+              </button>
+              <button
+                onClick={() => navigate("/product/fallback-1")}
+                className="rounded-full border border-white/15 px-6 py-3 font-semibold hover:bg-white/10"
+              >
+                Preview Product Flow
+              </button>
+            </div>
           </div>
-          
-          <div className="flex-1 flex justify-center">
-            {/* Mock Reels Phone UI */}
-            <motion.div 
+
+          <div className="flex flex-1 justify-center">
+            <motion.div
               initial={{ rotate: 10, y: 40 }}
               whileInView={{ rotate: 0, y: 0 }}
-              className="w-64 h-[450px] bg-black rounded-[3rem] border-[8px] border-white/10 relative overflow-hidden shadow-2xl"
+              className="relative h-[450px] w-64 overflow-hidden rounded-[3rem] border-[8px] border-white/10 bg-black shadow-2xl"
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 p-6 flex flex-col justify-end">
-                <div className="w-10 h-10 rounded-full bg-gray-600 mb-4" />
-                <div className="w-3/4 h-2 bg-white/20 rounded-full mb-2" />
-                <div className="w-1/2 h-2 bg-white/20 rounded-full" />
+              <div className="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black via-transparent to-transparent p-6">
+                <div className="mb-4 h-10 w-10 rounded-full bg-gray-600" />
+                <div className="mb-2 h-2 w-3/4 rounded-full bg-white/20" />
+                <div className="h-2 w-1/2 rounded-full bg-white/20" />
               </div>
-              <div className="w-full h-full bg-gradient-to-br from-purple-800 to-blue-900 animate-pulse" />
+              <div className="h-full w-full animate-pulse bg-gradient-to-br from-purple-800 to-blue-900" />
             </motion.div>
           </div>
         </div>
-        
-        {/* Glow behind the phone */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-purple-600/20 blur-[100px] rounded-full" />
+
+        <div className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-600/20 blur-[100px]" />
       </div>
     </section>
   );

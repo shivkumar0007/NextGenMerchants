@@ -5,6 +5,8 @@ import { API_BASE, fallbackProducts, getStoredUser } from "../utils/shop";
 const emptyForm = {
   name: "",
   price: "",
+  originalPrice: "",
+  discountPercent: "",
   image: "",
   description: "",
   category: "",
@@ -65,6 +67,8 @@ const Admin = () => {
           body: JSON.stringify({
             ...form,
             price: Number(form.price),
+            originalPrice: Number(form.originalPrice),
+            discountPercent: Number(form.discountPercent),
             stock: Number(form.stock),
           }),
         }
@@ -116,6 +120,8 @@ const Admin = () => {
     setForm({
       name: product.name || "",
       price: product.price || "",
+      originalPrice: product.originalPrice || "",
+      discountPercent: product.discountPercent || "",
       image: product.image || "",
       description: product.description || "",
       category: product.category || "",
@@ -206,11 +212,25 @@ const Admin = () => {
                 className="rounded-2xl border border-white/10 bg-[#090d1d] px-4 py-3 outline-none"
               />
               <input
+                name="originalPrice"
+                value={form.originalPrice}
+                onChange={handleChange}
+                placeholder="Original Price"
+                className="rounded-2xl border border-white/10 bg-[#090d1d] px-4 py-3 outline-none"
+              />
+              <input
+                name="discountPercent"
+                value={form.discountPercent}
+                onChange={handleChange}
+                placeholder="Discount %"
+                className="rounded-2xl border border-white/10 bg-[#090d1d] px-4 py-3 outline-none"
+              />
+              <input
                 name="image"
                 value={form.image}
                 onChange={handleChange}
                 placeholder="Image URL"
-                className="rounded-2xl border border-white/10 bg-[#090d1d] px-4 py-3 outline-none md:col-span-2"
+                className="rounded-2xl border border-white/10 bg-[#090d1d] px-4 py-3 outline-none"
               />
               <input
                 name="category"
@@ -283,7 +303,19 @@ const Admin = () => {
                     <p className="text-sm text-slate-300">
                       {product.description}
                     </p>
-                    <p className="text-lg font-semibold">Rs. {product.price}</p>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-lg font-semibold">Rs. {product.price}</p>
+                      {product.originalPrice ? (
+                        <span className="text-sm text-slate-500 line-through">
+                          Rs. {product.originalPrice}
+                        </span>
+                      ) : null}
+                      {product.discountPercent ? (
+                        <span className="rounded-full bg-emerald-400/15 px-2 py-1 text-xs text-emerald-200">
+                          {product.discountPercent}% OFF
+                        </span>
+                      ) : null}
+                    </div>
                     <div className="grid grid-cols-2 gap-3">
                       <button
                         onClick={() => editProduct(product)}
