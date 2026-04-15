@@ -18,43 +18,51 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  const scrollToSection = (id) => {
+    setOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed top-0 z-50 w-full border-b border-white/5 bg-black/30 px-6 py-4 backdrop-blur-md"
+      className="fixed top-0 z-50 w-full border-b border-white/10 bg-[rgba(7,10,20,0.72)] px-6 py-4 backdrop-blur-xl"
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link
           to="/"
-          className="bg-gradient-to-r from-white to-gray-500 bg-clip-text text-2xl font-bold tracking-tighter text-transparent"
+          className="font-['Space_Grotesk'] text-2xl font-bold tracking-tight text-white"
         >
-          SHOPX <span className="text-purple-500">AI</span>
+          SHOPX <span className="text-[#f0b35b]">AI</span>
         </Link>
 
-        <div className="hidden gap-8 text-sm text-gray-400 md:flex">
-          <a href="#features" className="hover:text-white">
+        <div className="hidden gap-8 text-sm text-slate-300 md:flex">
+          <button onClick={() => scrollToSection("features")} className="hover:text-white">
             Features
-          </a>
-          <a href="#explore" className="hover:text-white">
+          </button>
+          <button onClick={() => scrollToSection("shop")} className="hover:text-white">
+            Shop
+          </button>
+          <button onClick={() => scrollToSection("explore")} className="hover:text-white">
             Explore
-          </a>
-          <a href="#about" className="hover:text-white">
+          </button>
+          <button onClick={() => scrollToSection("about")} className="hover:text-white">
             About
-          </a>
+          </button>
         </div>
 
         <div className="relative flex items-center gap-4">
           {!token ? (
             <>
-              <button onClick={handleAccess} className="text-sm text-gray-300 hover:text-white">
+              <button onClick={handleAccess} className="text-sm text-slate-200 hover:text-white">
                 Login
               </button>
 
               <Link
                 to="/signup"
-                className="rounded-full bg-white px-5 py-2 text-sm font-bold text-black"
+                className="rounded-full bg-[#f0b35b] px-5 py-2 text-sm font-bold text-slate-950 transition hover:bg-[#f5c575]"
               >
                 Sign Up
               </Link>
@@ -63,28 +71,28 @@ const Navbar = () => {
             <div className="relative">
               <div
                 onClick={() => setOpen(!open)}
-                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-purple-600 font-bold"
+                className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-[#f0b35b] font-bold text-slate-950"
               >
-                U
+                {JSON.parse(localStorage.getItem("user") || "{}")?.name?.[0] || "U"}
               </div>
 
               {open && (
-                <div className="absolute right-0 mt-3 w-48 rounded-lg border border-white/10 bg-black shadow-lg">
+                <div className="absolute right-0 mt-3 w-48 rounded-2xl border border-white/10 bg-[#09101d] p-2 shadow-lg">
                   <button
                     onClick={() => navigate("/dashboard")}
-                    className="w-full px-4 py-2 text-left hover:bg-white/10"
+                    className="w-full rounded-xl px-4 py-2 text-left hover:bg-white/10"
                   >
                     Dashboard
                   </button>
                   <button
                     onClick={() => navigate("/profile")}
-                    className="w-full px-4 py-2 text-left hover:bg-white/10"
+                    className="w-full rounded-xl px-4 py-2 text-left hover:bg-white/10"
                   >
                     Profile
                   </button>
                   <button
                     onClick={handleLogout}
-                    className="w-full px-4 py-2 text-left text-red-400 hover:bg-white/10"
+                    className="w-full rounded-xl px-4 py-2 text-left text-red-400 hover:bg-white/10"
                   >
                     Logout
                   </button>
