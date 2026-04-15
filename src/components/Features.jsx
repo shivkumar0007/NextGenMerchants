@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import {
+  ArrowRight,
   Cpu,
   Gamepad2,
   Gift,
@@ -24,13 +25,22 @@ const featureList = [
 
 const Features = () => {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  const openFeatureFlow = () => {
+    navigate(token ? "/dashboard" : "/login");
+  };
 
   return (
     <section id="features" className="mx-auto max-w-7xl px-6 py-24">
       <div className="mb-16 text-center">
-        <h2 className="mb-4 text-3xl font-bold md:text-5xl">Premium Features</h2>
-        <p className="text-gray-500">
-          Everything you need for the ultimate shopping experience.
+        <p className="text-sm uppercase tracking-[0.35em] text-[#f0b35b]">Why ShopX AI</p>
+        <h2 className="mb-4 mt-4 font-['Space_Grotesk'] text-3xl font-bold md:text-5xl">
+          Premium ecommerce features, clearly linked
+        </h2>
+        <p className="mx-auto max-w-2xl text-slate-400">
+          Homepage se dashboard aur product journey tak har action ko sensible flow
+          diya gaya hai, taaki UX broken na lage.
         </p>
       </div>
 
@@ -43,14 +53,17 @@ const Features = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
-            onClick={() => navigate("/dashboard")}
-            className="group rounded-[2rem] border border-white/5 bg-white/5 p-8 text-left backdrop-blur-sm transition-all hover:border-purple-500/30 hover:bg-white/[0.07]"
+            onClick={openFeatureFlow}
+            className="group rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03))] p-8 text-left backdrop-blur-sm transition-all hover:border-[#f0b35b]/35 hover:bg-white/[0.09]"
           >
             <div className="mb-4 w-fit rounded-2xl bg-black/40 p-3 transition-transform group-hover:scale-110">
               {feature.icon}
             </div>
             <h3 className="mb-2 text-lg font-bold">{feature.title}</h3>
             <p className="text-sm leading-relaxed text-gray-500">{feature.desc}</p>
+            <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-white">
+              Explore flow <ArrowRight size={15} />
+            </div>
           </motion.button>
         ))}
       </div>
